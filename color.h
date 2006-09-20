@@ -1,11 +1,13 @@
-#define c_colorcount 8
+#define COLOR_COUNT 8
 
-static char *colors[c_colorcount] =
+#define ESC "\x1b"
+
+static char *colors[COLOR_COUNT] =
   { "\xFF",
     "0",
     "1",
     "2",
     "[",
-    "\x1B[1m1\x1B[22m",
-    "\x1B[1m2\x1B[22m",
-    "\x1B[1m[\x1B[22m" };
+    ESC "[1m1" ESC "[22m",
+    ESC "[1m2" ESC "[22m",
+    ESC "[1m[" ESC "[22m" };

@@ -3,49 +3,47 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <math.h>
 #include <float.h>
 #include <termios.h>
 #include <signal.h>
+#include <string.h>
 #include <sys/ioctl.h>
 #include <sys/poll.h>
 
 #include "color.h"
 #include "pi.h"
 
-typedef int bool;
-#define false 0
-#define true 1
+static struct termios term_attr;
+static bool term_attr_saved = false;
 
-struct termios termattr;
+#define DEFAULT_COLOR "7"
 
-#define c_default_color "7"
+#define T_GOTO00 ESC "[H"
+#define T_CLEAR ESC "[H" ESC "[2J"
+#define T_COLOR(color) ESC "[0;3" color "m"
+#define T_SAVE ESC "7"
+#define T_RESTORE ESC "8"
+#define T_DRAW_ON ESC "[12m"
+#define T_DRAW_OFF ESC "[10;0m"
+#define T_CURSOR_ON ESC "[?25h"
+#define T_CURSOR_OFF ESC "[?25l"
 
-#define c_str_goto00 "\x1B[H"
-#define c_str_clear "\x1B[H\x1B[2J"
-#define c_str_color(color) "\x1B[0;3" color "m"
-#define c_str_save "\x1B""7"
-#define c_str_restore "\x1B""8"
-#define c_str_drawon "\x1B[12m"
-#define c_str_drawoff "\x1B[10;0m"
-#define c_str_cursoron "\x1B[?25h"
-#define c_str_cursoroff "\x1B[?25l"
-
-double sines[1<<8];
+static double sines[1 << 8];
 
 static inline int get_pixel(int x, int y)
 {
-  char c;
   if (x < 0 || y < 0)
     return 0;
-  if (x >= c_vimagewidth || y >= c_vimageheight)
+  if (x >= IMAGE_WIDTH || y >= IMAGE_HEIGHT)
     return 0;
-  c = vimage[c_vimagewidth * y + x];
+  char c = image[IMAGE_WIDTH * y + x];
   if (c == '#')
-    return c_vimagecolorcount - 1;
+    return IMAGE_COLOR_COUNT - 1;
   if (c >= 'A' && c <= 'Z')
-    return c_vimagecolorcount - (1 + c - 'A');
+    return IMAGE_COLOR_COUNT - (1 + c - 'A');
   return 0;
 }
 
@@ -66,53 +64,56 @@ static inline double get_pixel_ex(double x, double y)
 
 static void restore_screen(void)
 {
-  fputs(c_str_cursoron c_str_drawoff c_str_drawoff, stdout);
+  fputs(T_CURSOR_ON T_DRAW_OFF T_DRAW_OFF, stdout);
   fflush(stdout);
-  tcsetattr(STDIN_FILENO, TCSANOW, &termattr);
+  if (term_attr_saved)
+    tcsetattr(STDIN_FILENO, TCSANOW, &term_attr);
 }
 
 static inline bool init_screen(void)
 {
-  struct termios cattr;
+  struct termios curr_attr;
   if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
     return false;
-  tcgetattr(STDIN_FILENO, &termattr);
+  if (strcmp(getenv("TERM"), "linux") != 0)
+    return false;
+  tcgetattr(STDIN_FILENO, &term_attr);
+  term_attr_saved = true;
   atexit(restore_screen);
-  cattr = termattr;
-  cattr.c_lflag &= ~(ICANON|ECHO);
-  cattr.c_cc[VMIN] = 0;
-  cattr.c_cc[VTIME] = 0;
-  tcsetattr(STDIN_FILENO, TCSAFLUSH, &cattr);
-  fputs(c_str_clear c_str_color(c_default_color) c_str_drawon c_str_cursoroff, stdout);
+  curr_attr = term_attr;
+  curr_attr.c_lflag &= ~(ICANON | ECHO);
+  curr_attr.c_cc[VMIN] = 0;
+  curr_attr.c_cc[VTIME] = 0;
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &curr_attr);
+  fputs(T_CLEAR T_COLOR(DEFAULT_COLOR) T_DRAW_ON T_CURSOR_OFF, stdout);
   fflush(stdout);
   return true;
 }
 
 static inline void goto_0_0(void)
 {
-  fputs(c_str_goto00, stdout);
+  fputs(T_GOTO00, stdout);
 }
 
-static inline void rh_init_sines(void)
+static inline void init_sines(void)
 {
-  int i;
 #ifndef M_PI
   double M_PI_4 = atan(1);
 #endif
 
-  for (i=0; i<(1<<8); i++)
-    sines[i]=sin(i*M_PI_4/(1<<5));
+  for (int i = 0; i < (1 << 8); i++)
+    sines[i] = sin(i * M_PI_4 / (1 << 5));
 }
 
-static inline bool get_term_size(int *x, int *y)
+static inline bool get_term_size(unsigned int *x, unsigned int *y)
 {
-  struct winsize ws;
+  struct winsize terminal_size;
 
   *x = *y = 0;
-  if (ioctl(0, TIOCGWINSZ, &ws) != -1)
+  if (ioctl(0, TIOCGWINSZ, &terminal_size) != -1)
   {
-    *x=ws.ws_col;
-    *y=ws.ws_row;
+    *x = terminal_size.ws_col;
+    *y = terminal_size.ws_row;
     return true;
   }
   return false;
@@ -124,14 +125,22 @@ static void signal_handler(int sn)
   fprintf(stderr, "Ouch! (%d)\n\n", sn);
   exit(EXIT_FAILURE);
 }  
-              
+  
+static void setup_signals()
+{
+  int signums[] = { SIGHUP, SIGINT, SIGTERM, SIGABRT, SIGQUIT, SIGKILL, 0 };
+  struct sigaction sa = {
+    .sa_handler = signal_handler,
+    .sa_flags = SA_RESETHAND
+  };
+  sigfillset(&sa.sa_mask);
+  for (int *signum_ptr = signums; *signum_ptr != 0; signum_ptr++)
+    sigaction(*signum_ptr, &sa, NULL);
+}
+
 int main(int argc, char **argv)
 {
-  int c, x, y;
-  uint8_t alpha;
-  int sizex, sizey;
   int step = 0;
-
   if (argc >= 2)
     step = atoi(argv[1]);
   if (step < 1)
@@ -139,42 +148,40 @@ int main(int argc, char **argv)
   if (step > 10)
     step = 10;
   
+  unsigned int sizex, sizey;
   if (!get_term_size(&sizex, &sizey) || !init_screen())
   {
-    fputs("Nasty screen, can't continue...\n", stderr);
-    exit(EXIT_FAILURE);
+    fputs("Nasty terminal, can't continue...\n", stderr);
+    return EXIT_FAILURE;
   }
-  signal(SIGHUP, signal_handler);
-  signal(SIGINT, signal_handler);
-  signal(SIGTERM, signal_handler);
-  signal(SIGABRT, signal_handler);
 
-  rh_init_sines();
+  setup_signals();
+  init_sines();
   
   double cx = 0.5 * sizex;
   double cy = 0.5 * sizey;
 
   bool stop = false;
-  for (alpha = 0; !stop; alpha += step)
+  for (uint8_t alpha = 0; !stop; alpha += step)
   {
     goto_0_0();
     double sina = sines[alpha];
     double cosa = sines[(uint8_t)(alpha + (1 << 6))];
-    for (y = 0; y < sizey; y++)
-    for (x = 0; x < sizex; x++)
+    for (unsigned int y = 0; y < sizey; y++)
+    for (unsigned int x = 0; x < sizex; x++)
     {
-      double dx =       (x - cx) * cosa - 2 * (y - cy) * sina + 0.5 * c_vimagewidth;
-      double dy = 0.5 * (x - cx) * sina +     (y - cy) * cosa + 0.5 * c_vimageheight;
+      double dx =       (x - cx) * cosa - 2 * (y - cy) * sina + 0.5 * IMAGE_WIDTH;
+      double dy = 0.5 * (x - cx) * sina +     (y - cy) * cosa + 0.5 * IMAGE_HEIGHT;
 
-      c = get_pixel_ex(dx, dy) * c_colorcount / c_vimagecolorcount;
-      if (c >= 0 && c < c_colorcount)
+      int c = get_pixel_ex(dx, dy) * COLOR_COUNT / IMAGE_COLOR_COUNT;
+      if (c >= 0 && c < COLOR_COUNT)
         fputs(colors[c], stdout);
     }
     fflush(stdout);
     static struct pollfd ufd = { .fd = STDIN_FILENO, .events = POLLIN };
     stop = poll(&ufd, 1, 40 * step) > 0;
   }
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 /* vim:set ts=2 sw=2 et: */

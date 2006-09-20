@@ -1,8 +1,8 @@
-#define c_vimagewidth 56
-#define c_vimageheight 25
-#define c_vimagecolorcount 16
+#define IMAGE_WIDTH 56
+#define IMAGE_HEIGHT 25
+#define IMAGE_COLOR_COUNT 16
 
-static char *vimage =
+static char *image =
 "                                                        "
 "                                                        "
 "                                              NKHH      "

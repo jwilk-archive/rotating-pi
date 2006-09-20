@@ -14,7 +14,7 @@ ifeq ($(M_DEBUG),yes)
 endif
 
 CFLAGS_opt = -O3 -s
-CFLAGS_std = -std=c99 -pedantic -Wall -Winline
+CFLAGS_std = -std=gnu99 -pedantic -Wall -Winline
 CFLAGS_lib = -lm
 
 all: rhotate
