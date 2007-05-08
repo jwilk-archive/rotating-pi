@@ -1,3 +1,9 @@
+rhotate (0.3.2) unstable; urgency=low
+
+  * Repackage.
+
+ -- Jakub Wilk <ubanus@users.sf.net>  Tue, 08 May 2007 22:19:03 +0200
+
 rhotate (0.3.1) unstable; urgency=low
 
   * Require "$TERM" == "linux".
