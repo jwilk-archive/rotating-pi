@@ -1,0 +1,3 @@
+syntax: glob
+rotating-pi
+*.o
