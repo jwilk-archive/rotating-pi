@@ -202,7 +202,7 @@ int main(int argc, char **argv)
       fputs(colors[c], stdout);
     }
     fflush(stdout);
-    static struct pollfd ufd = { .fd = STDIN_FILENO, .events = POLLIN };
+    struct pollfd ufd = { .fd = STDIN_FILENO, .events = POLLIN };
     stop = poll(&ufd, 1, 40 * step) > 0;
   }
   return EXIT_SUCCESS;
