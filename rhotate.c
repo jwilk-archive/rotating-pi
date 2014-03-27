@@ -120,7 +120,7 @@ static inline void goto_0_0(void)
 static inline void init_sines(void)
 {
   for (int i = 0; i < (1 << 8); i++)
-    sines[i] = sin(i * M_PI_4 / (1 << 5));
+    sines[i] = sin(i * M_PI / (1 << 7));
 }
 
 static inline bool get_term_size(unsigned int *x, unsigned int *y)
