@@ -12,3 +12,5 @@ static char *colors[COLOR_COUNT] =
     ESC "[1m1" ESC "[0m",
     ESC "[1m[" ESC "[0m",
   };
+
+/* vim:set ts=2 sw=2 et: */
