@@ -140,7 +140,7 @@ static bool get_term_size(unsigned int *x, unsigned int *y)
 static void signal_handler(int sn)
 {
   restore_screen();
-  fprintf(stderr, "Ouch! (%d)\n\n", sn);
+  fprintf(stderr, "Interrupted by user!\n");
   exit(EXIT_FAILURE);
 }  
   
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
   unsigned int sizex, sizey;
   if (!get_term_size(&sizex, &sizey) || !init_screen())
   {
-    fputs("Nasty terminal, can't continue...\n", stderr);
+    fprintf(stderr, "I don't like this terminal!\n");
     return EXIT_FAILURE;
   }
 
