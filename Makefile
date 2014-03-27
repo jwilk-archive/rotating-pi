@@ -1,4 +1,4 @@
-CFLAGS += -std=c99 -pedantic -Wall -Winline
+CFLAGS += -std=c99 -pedantic -Wall
 LDFLAGS += -lm
 
 all: rhotate

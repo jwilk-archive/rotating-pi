@@ -55,7 +55,7 @@ static bool term_attr_saved = false;
 
 static double sines[1 << 8];
 
-static inline int get_pixel(int x, int y)
+static int get_pixel(int x, int y)
 {
   if (x < 0 || y < 0)
     return 0;
@@ -69,7 +69,7 @@ static inline int get_pixel(int x, int y)
   return 0;
 }
 
-static inline double get_pixel_ex(double x, double y)
+static double get_pixel_ex(double x, double y)
 {
   double rx = floor(x); double fx = x - rx; double gx = 1 - fx;
   double ry = floor(y); double fy = y - ry; double gy = 1 - fy;
@@ -92,7 +92,7 @@ static void restore_screen(void)
     tcsetattr(STDIN_FILENO, TCSANOW, &term_attr);
 }
 
-static inline bool init_screen(void)
+static bool init_screen(void)
 {
   struct termios curr_attr;
   if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
@@ -112,18 +112,18 @@ static inline bool init_screen(void)
   return true;
 }
 
-static inline void goto_0_0(void)
+static void goto_0_0(void)
 {
   fputs(T_GOTO00, stdout);
 }
 
-static inline void init_sines(void)
+static void init_sines(void)
 {
   for (int i = 0; i < (1 << 8); i++)
     sines[i] = sin(i * M_PI / (1 << 7));
 }
 
-static inline bool get_term_size(unsigned int *x, unsigned int *y)
+static bool get_term_size(unsigned int *x, unsigned int *y)
 {
   struct winsize terminal_size;
 
