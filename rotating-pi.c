@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <float.h>
 #include <math.h>
+#include <poll.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -32,7 +33,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
-#include <sys/poll.h>
 #include <termios.h>
 #include <unistd.h>
 
