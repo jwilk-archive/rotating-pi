@@ -2,7 +2,7 @@
 #define IMAGE_HEIGHT 25
 #define IMAGE_COLOR_COUNT 16
 
-static char *image =
+static const char *image =
 "                                                        "
 "                                                        "
 "                                              NKHH      "
