@@ -1,4 +1,4 @@
-/* Copyright (c) 2004, 2006, 2007 Jakub Wilk <ubanus@users.sf.net> */
+/* Copyright (c) 2004, 2006, 2007 Jakub Wilk <jwilk@jwilk.net> */
 
 #include <stdlib.h>
 #include <stdint.h>

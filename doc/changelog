@@ -2,18 +2,18 @@ rhotate (0.3.2) unstable; urgency=low
 
   * Repackage.
 
- -- Jakub Wilk <ubanus@users.sf.net>  Tue, 08 May 2007 22:19:03 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 08 May 2007 22:19:03 +0200
 
 rhotate (0.3.1) unstable; urgency=low
 
   * Require "$TERM" == "linux".
   * Better signal handling.
 
- -- Jakub Wilk <ubanus@users.sf.net>  Wed, 20 Sep 2006 14:29:56 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 20 Sep 2006 14:29:56 +0200
 
 rhotate (0.3-1) unstable; urgency=low
 
   * Initial release.
 
- -- Jakub Wilk <ubanus@users.sf.net>  Thu,  2 Feb 2006 15:15:43 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu,  2 Feb 2006 15:15:43 +0100
 
