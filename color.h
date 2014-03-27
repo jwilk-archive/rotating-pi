@@ -1,6 +1,6 @@
 #define ESC "\x1b"
 
-static char *colors[] =
+static const char *colors[] =
   { "\xFF",
     ESC "[30;1m0" ESC "[0m",
     ESC "[30;1m1" ESC "[0m",
