@@ -22,6 +22,7 @@
 
 #define _XOPEN_SOURCE 500
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -192,8 +193,8 @@ int main(int argc, char **argv)
       double dy = 0.5 * (x - cx) * sina +     (y - cy) * cosa + 0.5 * IMAGE_HEIGHT;
 
       int c = get_pixel_ex(dx, dy) * color_count / IMAGE_COLOR_COUNT;
-      if (c >= 0 && c < color_count)
-        fputs(colors[c], stdout);
+      assert(c >= 0 && c < color_count);
+      fputs(colors[c], stdout);
     }
     fflush(stdout);
     static struct pollfd ufd = { .fd = STDIN_FILENO, .events = POLLIN };
