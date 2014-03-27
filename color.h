@@ -4,10 +4,11 @@
 
 static char *colors[COLOR_COUNT] =
   { "\xFF",
-    "0",
+    ESC "[30;1m0" ESC "[0m",
+    ESC "[30;1m1" ESC "[0m",
+    ESC "[30;1m[" ESC "[0m",
     "1",
-    "2",
     "[",
-    ESC "[1m1" ESC "[22m",
-    ESC "[1m2" ESC "[22m",
-    ESC "[1m[" ESC "[22m" };
+    ESC "[1m1" ESC "[0m",
+    ESC "[1m[" ESC "[0m",
+  };
