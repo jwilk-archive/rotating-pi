@@ -23,7 +23,6 @@
 #define _XOPEN_SOURCE 500
 
 #include <assert.h>
-#include <float.h>
 #include <math.h>
 #include <poll.h>
 #include <signal.h>
