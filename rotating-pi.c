@@ -191,8 +191,8 @@ int main(int argc, char **argv)
       double dx =       (x - cx) * cosa - 2 * (y - cy) * sina + 0.5 * IMAGE_WIDTH;
       double dy = 0.5 * (x - cx) * sina +     (y - cy) * cosa + 0.5 * IMAGE_HEIGHT;
 
-      int c = get_pixel_ex(dx, dy) * COLOR_COUNT / IMAGE_COLOR_COUNT;
-      if (c >= 0 && c < COLOR_COUNT)
+      int c = get_pixel_ex(dx, dy) * color_count / IMAGE_COLOR_COUNT;
+      if (c >= 0 && c < color_count)
         fputs(colors[c], stdout);
     }
     fflush(stdout);
