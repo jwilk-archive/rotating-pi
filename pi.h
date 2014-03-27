@@ -1,6 +1,6 @@
-#define IMAGE_WIDTH 56
-#define IMAGE_HEIGHT 25
-#define IMAGE_COLOR_COUNT 16
+static const int image_width = 56;
+static const int image_height = 25;
+static const int image_color_count = 16;
 
 static const char *image =
 "                                                        "

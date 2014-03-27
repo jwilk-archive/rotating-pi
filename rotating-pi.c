@@ -57,13 +57,13 @@ static int get_pixel(int x, int y)
 {
   if (x < 0 || y < 0)
     return 0;
-  if (x >= IMAGE_WIDTH || y >= IMAGE_HEIGHT)
+  if (x >= image_width || y >= image_height)
     return 0;
-  char c = image[IMAGE_WIDTH * y + x];
+  char c = image[image_width * y + x];
   if (c == '#')
-    return IMAGE_COLOR_COUNT - 1;
+    return image_color_count - 1;
   if (c >= 'A' && c <= 'Z')
-    return IMAGE_COLOR_COUNT - (1 + c - 'A');
+    return image_color_count - (1 + c - 'A');
   return 0;
 }
 
@@ -194,10 +194,10 @@ int main(int argc, char **argv)
     for (unsigned int y = 0; y < sizey; y++)
     for (unsigned int x = 0; x < sizex; x++)
     {
-      double dx =       (x - cx) * cosa - 2 * (y - cy) * sina + 0.5 * IMAGE_WIDTH;
-      double dy = 0.5 * (x - cx) * sina +     (y - cy) * cosa + 0.5 * IMAGE_HEIGHT;
+      double dx =       (x - cx) * cosa - 2 * (y - cy) * sina + 0.5 * image_width;
+      double dy = 0.5 * (x - cx) * sina +     (y - cy) * cosa + 0.5 * image_height;
 
-      int c = get_pixel_ex(dx, dy) * color_count / IMAGE_COLOR_COUNT;
+      int c = get_pixel_ex(dx, dy) * color_count / image_color_count;
       assert(c >= 0 && c < color_count);
       fputs(colors[c], stdout);
     }
