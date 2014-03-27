@@ -144,7 +144,7 @@ static void signal_handler(int sn)
 
 static void setup_signals()
 {
-  int signums[] = {
+  static const int signums[] = {
     SIGABRT,
     SIGHUP,
     SIGINT,
@@ -158,7 +158,7 @@ static void setup_signals()
     .sa_flags = SA_RESETHAND
   };
   sigfillset(&sa.sa_mask);
-  for (int *signum_ptr = signums; *signum_ptr != 0; signum_ptr++)
+  for (const int *signum_ptr = signums; *signum_ptr != 0; signum_ptr++)
     sigaction(*signum_ptr, &sa, NULL);
 }
 
