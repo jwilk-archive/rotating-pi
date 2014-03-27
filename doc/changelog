@@ -1,13 +1,13 @@
-rhotate (0.3.2) unstable; urgency=low
+rhotate (0.4) UNRELEASED; urgency=low
 
-  * Repackage.
+  * Clean up the code.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 08 May 2007 22:19:03 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 27 Mar 2014 11:46:11 +0100
 
 rhotate (0.3.1) unstable; urgency=low
 
-  * Require "$TERM" == "linux".
-  * Better signal handling.
+  * Require TERM=linux.
+  * Improve signal handling.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Wed, 20 Sep 2006 14:29:56 +0200
 
