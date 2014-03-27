@@ -23,18 +23,18 @@
 #define _XOPEN_SOURCE 500
 
 #include <assert.h>
-#include <stdlib.h>
+#include <float.h>
+#include <math.h>
+#include <signal.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <math.h>
-#include <float.h>
-#include <termios.h>
-#include <signal.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/poll.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "color.h"
 #include "pi.h"
