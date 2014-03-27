@@ -41,11 +41,9 @@
 static struct termios term_attr;
 static bool term_attr_saved = false;
 
-#define DEFAULT_COLOR "7"
-
 #define T_GOTO00 ESC "[H"
 #define T_CLEAR ESC "[H" ESC "[2J"
-#define T_COLOR(color) ESC "[0;3" color "m"
+#define T_RESET_COLOR ESC "[0m"
 #define T_SAVE ESC "7"
 #define T_RESTORE ESC "8"
 #define T_DRAW_ON ESC "[12m"
@@ -107,7 +105,7 @@ static bool init_screen(void)
   curr_attr.c_cc[VMIN] = 0;
   curr_attr.c_cc[VTIME] = 0;
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &curr_attr);
-  fputs(T_CLEAR T_COLOR(DEFAULT_COLOR) T_DRAW_ON T_CURSOR_OFF, stdout);
+  fputs(T_CLEAR T_RESET_COLOR T_DRAW_ON T_CURSOR_OFF, stdout);
   fflush(stdout);
   return true;
 }
