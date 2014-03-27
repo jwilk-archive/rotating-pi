@@ -73,13 +73,13 @@ static double get_pixel_ex(double x, double y)
   double ry = floor(y); double fy = y - ry; double gy = 1 - fy;
 
   int ix = rx;
-  int iy = ry;  
-  
+  int iy = ry;
+
   return
     gx * gy * get_pixel(ix + 0, iy + 0) +
     fx * gy * get_pixel(ix + 1, iy + 0) +
     gx * fy * get_pixel(ix + 0, iy + 1) +
-    fx * fy * get_pixel(ix + 1, iy + 1);  
+    fx * fy * get_pixel(ix + 1, iy + 1);
 }
 
 static void restore_screen(void)
@@ -140,8 +140,8 @@ static void signal_handler(int sn)
   restore_screen();
   fprintf(stderr, "Interrupted by user!\n");
   exit(EXIT_FAILURE);
-}  
-  
+}
+
 static void setup_signals()
 {
   int signums[] = {
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
     step = 1;
   if (step > 10)
     step = 10;
-  
+
   unsigned int sizex, sizey;
   if (!get_term_size(&sizex, &sizey) || !init_screen())
   {
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
 
   setup_signals();
   init_sines();
-  
+
   double cx = 0.5 * sizex;
   double cy = 0.5 * sizey;
 
