@@ -20,6 +20,8 @@
  *
  * */
 
+#define _XOPEN_SOURCE 500
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -117,10 +119,6 @@ static inline void goto_0_0(void)
 
 static inline void init_sines(void)
 {
-#ifndef M_PI
-  double M_PI_4 = atan(1);
-#endif
-
   for (int i = 0; i < (1 << 8); i++)
     sines[i] = sin(i * M_PI_4 / (1 << 5));
 }
