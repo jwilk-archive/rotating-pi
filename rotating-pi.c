@@ -144,7 +144,7 @@ static void signal_handler(int sn)
   
 static void setup_signals()
 {
-  int signums[] = { SIGHUP, SIGINT, SIGTERM, SIGABRT, SIGQUIT, SIGKILL, 0 };
+  int signums[] = { SIGHUP, SIGINT, SIGTERM, SIGABRT, SIGQUIT, 0 };
   struct sigaction sa = {
     .sa_handler = signal_handler,
     .sa_flags = SA_RESETHAND
