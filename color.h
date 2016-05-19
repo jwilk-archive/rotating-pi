@@ -13,4 +13,4 @@ static const char *colors[] =
 
 static const size_t color_count = sizeof colors / sizeof colors[0];
 
-/* vim:set ts=2 sw=2 et: */
+/* vim:set ts=2 sts=2 sw=2 et: */
