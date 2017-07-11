@@ -137,6 +137,7 @@ static bool get_term_size(unsigned int *x, unsigned int *y)
 
 static void signal_handler(int sn)
 {
+  (void) sn;
   restore_screen();
   fprintf(stderr, "Interrupted by user!\n");
   exit(EXIT_FAILURE);
