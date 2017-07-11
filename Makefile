@@ -1,4 +1,4 @@
-CFLAGS += -std=c99 -pedantic -Wall
+CFLAGS += -std=c99 -pedantic -Wall -Wextra
 LDFLAGS += -lm
 
 all: rotating-pi
